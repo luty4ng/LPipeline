@@ -790,7 +790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39ff5e4bb3242224cbef0c3a82909b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseColor: {r: 1, g: 0.5518868, b: 0.5518868, a: 1}
+  baseColor: {r: 1, g: 0.5518868, b: 0.5518868, a: 0.7529412}
   alphaCutoff: 0.5
 --- !u!1 &963194225
 GameObject:
