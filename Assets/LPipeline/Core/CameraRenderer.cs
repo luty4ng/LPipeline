@@ -25,7 +25,7 @@ public partial class CameraRenderer
             return;
 
         Setup();
-        lighting.Setup(context);
+        lighting.Setup(context, cullingResults);
         // Draw visible Geometry
         DrawVisibleGeometry(useDynamicBatching, useGPUInstancing);
         // Draw all unsupported shaders
