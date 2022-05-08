@@ -19,7 +19,8 @@ public partial class CameraRenderer
         new ShaderTagId("Vertex"),
         new ShaderTagId("VertexLMRGBM"),
         new ShaderTagId("VertexLM"),
-        new ShaderTagId("SRPDefaultUnlit")
+        new ShaderTagId("SRPDefaultUnlit"),
+        new ShaderTagId("CustomLit")
     };
 
 #if UNITY_EDITOR

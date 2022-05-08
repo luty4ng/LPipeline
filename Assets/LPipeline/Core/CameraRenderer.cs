@@ -12,7 +12,8 @@ public partial class CameraRenderer
         name = bufferName
     };
     CullingResults cullingResults;
-    static ShaderTagId unlitShaderTagId = new ShaderTagId("SRPDefaultUnlit");
+    Lighting lighting = new Lighting();
+    static ShaderTagId unlitShaderTagId = new ShaderTagId("SRPDefaultUnlit"), litShaderTagId = new ShaderTagId("CustomLit");
     public void Render(ScriptableRenderContext context, Camera camera, bool useDynamicBatching, bool useGPUInstancing)
     {
         this.context = context;
@@ -24,6 +25,7 @@ public partial class CameraRenderer
             return;
 
         Setup();
+        lighting.Setup(context);
         // Draw visible Geometry
         DrawVisibleGeometry(useDynamicBatching, useGPUInstancing);
         // Draw all unsupported shaders
@@ -76,15 +78,18 @@ public partial class CameraRenderer
 
         // which kind of shader passes are allowed.
         // var drawingSettings = new DrawingSettings(unlitShaderTagId, sortingSettings); 
-        var drawingSettings = new DrawingSettings(legacyShaderTagIds[0], new SortingSettings(camera))
+        var drawingSettings = new DrawingSettings(unlitShaderTagId, new SortingSettings(camera))
         {
 			enableDynamicBatching = useDynamicBatching,
 			enableInstancing = useGPUInstancing
 		};
-        for (int i = 1; i < legacyShaderTagIds.Length; i++)
-        {
-            drawingSettings.SetShaderPassName(i, legacyShaderTagIds[i]);
-        }
+        
+
+        drawingSettings.SetShaderPassName(1, litShaderTagId);        
+        // for (int i = 1; i < legacyShaderTagIds.Length; i++)
+        // {
+        //     drawingSettings.SetShaderPassName(i, legacyShaderTagIds[i]);
+        // }
         // which render queues are allowed.
         var filteringSettings = new FilteringSettings(RenderQueueRange.opaque);
 
