@@ -8,7 +8,7 @@ public class PerObjectMaterialProperties : MonoBehaviour
     static int cutoffId = Shader.PropertyToID("_Cutoff");
     static int metallicId = Shader.PropertyToID("_Metallic");
 	static int smoothnessId = Shader.PropertyToID("_Smoothness");
-    static MaterialPropertyBlock block;
+    static MaterialPropertyBlock material;
 
     [SerializeField]
     Color baseColor = Color.white;
@@ -23,14 +23,14 @@ public class PerObjectMaterialProperties : MonoBehaviour
 
     void OnValidate()
     {
-        if (block == null)
+        if (material == null)
         {
-            block = new MaterialPropertyBlock();
+            material = new MaterialPropertyBlock();
         }
-        block.SetColor(baseColorId, baseColor);
-        block.SetFloat(cutoffId, alphaCutoff);
-        block.SetFloat(metallicId, metallic);
-		block.SetFloat(smoothnessId, smoothness);
-        GetComponent<Renderer>().SetPropertyBlock(block);
+        material.SetColor(baseColorId, baseColor);
+        material.SetFloat(cutoffId, alphaCutoff);
+        material.SetFloat(metallicId, metallic);
+		material.SetFloat(smoothnessId, smoothness);
+        GetComponent<Renderer>().SetPropertyBlock(material);
     }
 }
