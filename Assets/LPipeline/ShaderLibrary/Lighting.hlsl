@@ -6,7 +6,7 @@ float3 IncomingLight (Surface surface, BRDF brdf, Light light) {
 }
 
 float3 GetLighting (Surface surface, BRDF brdf, Light light) {
-	return IncomingLight(surface, brdf, light) * DirectBRDF(surface, brdf, light);
+	return IncomingLight(surface, brdf, light) * GetDirectBRDF(surface, brdf, light);
 }
 
 float3 GetLighting (Surface surface, BRDF brdf) {

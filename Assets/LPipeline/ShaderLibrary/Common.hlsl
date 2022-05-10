@@ -1,5 +1,6 @@
 #ifndef CUSTOM_COMMON_INCLUDED
 #define CUSTOM_COMMON_INCLUDED
+#define M_PI 3.14159265358
 
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/CommonMaterial.hlsl"
@@ -17,6 +18,12 @@
 float Square (float v) {
 	return v * v;
 }
+
+float sqr(float v)
+{
+    return v * v;
+}
+
 
 // float3 TransformObjectToWorld (float3 positionOS) {
 // 	return mul(unity_ObjectToWorld, float4(positionOS, 1.0)).xyz;
