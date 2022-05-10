@@ -1,8 +1,6 @@
 #ifndef CUSTOM_UNITY_INPUT_INCLUDED
 #define CUSTOM_UNITY_INPUT_INCLUDED
 
-// CBUFFER_START: constant memory buffer to be compatible with SRP Batcher
-// Unity doesn't compare the exact memory layout of materials, it simply only batches draw calls that use the exact same shader variant.
 CBUFFER_START(UnityPerDraw)
 	float4x4 unity_ObjectToWorld;
 	float4x4 unity_WorldToObject;

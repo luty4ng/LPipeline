@@ -1,7 +1,7 @@
 #ifndef CUSTOM_BRDF_INCLUDED
 #define CUSTOM_BRDF_INCLUDED
 #define MIN_REFLECTIVITY 0.04
-#define SPEC_MULTIPIER 500
+#define SPEC_MULTIPIER 800
 
 float OneMinusReflectivity (float metallic) {
 	float range = 1.0 - MIN_REFLECTIVITY;
@@ -37,7 +37,7 @@ float3 MinimalistDirectBRDF (Surface surface, BRDF brdf, Light light) {
 	return MinimalistSpecular(surface, brdf, light) * brdf.specular + brdf.diffuse;
 }
 
-// Fomula Reference: http://graphicrants.blogspot.com/2013/08/specular-brdf-reference.html
+// Reference: http://graphicrants.blogspot.com/2013/08/specular-brdf-reference.html
 float D_GGX(in float alpha, in float NoH)
 {
     float a2 = alpha*alpha;
@@ -70,19 +70,19 @@ float3 GetDirectBRDF(Surface surface, BRDF brdf, Light light)
     // refractive index
     float n = 1.5;
     float f0 = pow((1 - n)/(1 + n), 2);
-    // the fresnel term
-    float F = F_Schlick(f0, LoH);
-    // the geometry term
-    float G = G_Schlick(alpha, NoV);
-    // the NDF term
-    float D = D_GGX(alpha, NoH);
-    // specular term
-    float3 Rs = (brdf.specular*SPEC_MULTIPIER/M_PI *(F * G * D))/(4 * NoL * NoV);
-    // diffuse fresnel, can be cheaper as 1-f0
+    // the specular fresnel
+    float Fs = F_Schlick(f0, LoH);
+	// the diffuse fresnel
     float Fd = F_Schlick(f0, NoL);
+    // the geometry
+    float G = G_Schlick(alpha, NoV);
+    // the distribution
+    float D = D_GGX(alpha, NoH);
+    // specular
+    float3 Rs = (brdf.specular*SPEC_MULTIPIER/M_PI *(Fs * G * D))/(4 * NoL * NoV);
+	// diffuse
     float3 Rd = brdf.diffuse/M_PI * (1.0f - Fd);
     return (Rd + Rs);
 }
-
 
 #endif

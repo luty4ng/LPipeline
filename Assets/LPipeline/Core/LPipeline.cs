@@ -16,7 +16,6 @@ public class LPipeline : RenderPipeline
 
     public LPipeline(bool useDynamicBatching, bool useGPUInstancing, bool useSRPBatcher)
     {
-
         this.useDynamicBatching = useDynamicBatching;
         this.useGPUInstancing = useGPUInstancing;
         GraphicsSettings.useScriptableRenderPipelineBatching = useSRPBatcher;
