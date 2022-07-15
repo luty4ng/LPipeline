@@ -13,19 +13,20 @@ public partial class CameraRenderer
     };
     CullingResults cullingResults;
     Lighting lighting = new Lighting();
+
     static ShaderTagId unlitShaderTagId = new ShaderTagId("SRPDefaultUnlit"), litShaderTagId = new ShaderTagId("CustomLit");
-    public void Render(ScriptableRenderContext context, Camera camera, bool useDynamicBatching, bool useGPUInstancing)
+    public void Render(ScriptableRenderContext context, Camera camera, bool useDynamicBatching, bool useGPUInstancing, ShadowSettings shadowSettings)
     {
         this.context = context;
         this.camera = camera;
 
         PrepareForSceneWindow();
         PrepareBuffer();
-        if (!Cull())
+        if (!Cull(shadowSettings.maxDistance))
             return;
 
         Setup();
-        lighting.Setup(context, cullingResults);
+        lighting.Setup(context, cullingResults, shadowSettings);
         // Draw visible Geometry
         DrawVisibleGeometry(useDynamicBatching, useGPUInstancing);
         // Draw all unsupported shaders
@@ -42,10 +43,11 @@ public partial class CameraRenderer
         buffer.Clear();
     }
 
-    private bool Cull()
+    private bool Cull(float maxShadowDistance)
     {
         if (camera.TryGetCullingParameters(out ScriptableCullingParameters p))
         {
+            p.shadowDistance = Mathf.Min(maxShadowDistance, camera.farClipPlane);
             cullingResults = context.Cull(ref p);
             return true;
         }
@@ -80,12 +82,12 @@ public partial class CameraRenderer
         // var drawingSettings = new DrawingSettings(unlitShaderTagId, sortingSettings); 
         var drawingSettings = new DrawingSettings(unlitShaderTagId, new SortingSettings(camera))
         {
-			enableDynamicBatching = useDynamicBatching,
-			enableInstancing = useGPUInstancing
-		};
-        
+            enableDynamicBatching = useDynamicBatching,
+            enableInstancing = useGPUInstancing
+        };
 
-        drawingSettings.SetShaderPassName(1, litShaderTagId);        
+
+        drawingSettings.SetShaderPassName(1, litShaderTagId);
         // for (int i = 1; i < legacyShaderTagIds.Length; i++)
         // {
         //     drawingSettings.SetShaderPassName(i, legacyShaderTagIds[i]);

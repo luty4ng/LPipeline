@@ -11,6 +11,8 @@ Shader "LPipeline/Unlit" {
         [Toggle(_CLIPPING)] _Clipping ("Alpha Clipping", Float) = 0
     }
     
+    CustomEditor "CustomShaderGUI"
+
     SubShader
     {
         Pass
