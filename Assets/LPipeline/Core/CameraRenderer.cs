@@ -24,20 +24,25 @@ public partial class CameraRenderer
         PrepareBuffer();
         if (!Cull(shadowSettings.maxDistance))
             return;
-
-        Setup();
+        
+        buffer.BeginSample(SampleName);
+		ExecuteBuffer();
         lighting.Setup(context, cullingResults, shadowSettings);
+        buffer.EndSample(SampleName);
+        
+        Setup();
         // Draw visible Geometry
         DrawVisibleGeometry(useDynamicBatching, useGPUInstancing);
         // Draw all unsupported shaders
         DrawUnsupportedShaders();
         // Draw Gizmos
         DrawGizmos();
+        lighting.Clearup();
         // Submit
         Submit();
     }
 
-    private void ExcuteBuffer()
+    private void ExecuteBuffer()
     {
         context.ExecuteCommandBuffer(buffer);
         buffer.Clear();
@@ -66,7 +71,7 @@ public partial class CameraRenderer
                 camera.backgroundColor.linear : Color.clear
         );
         buffer.BeginSample(SampleName);
-        ExcuteBuffer();
+        ExecuteBuffer();
     }
 
     private void DrawVisibleGeometry(bool useDynamicBatching, bool useGPUInstancing)
@@ -108,7 +113,7 @@ public partial class CameraRenderer
     private void Submit()
     {
         buffer.EndSample(SampleName);
-        ExcuteBuffer();
+        ExecuteBuffer();
         context.Submit();
     }
 }
